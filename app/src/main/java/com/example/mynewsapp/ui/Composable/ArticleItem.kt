@@ -1,6 +1,5 @@
 package com.example.mynewsapp.ui.Composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.mynewsapp.R
 import com.example.mynewsapp.domain.mapper.Article
 
@@ -49,8 +49,8 @@ fun ArticleItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(modifier = Modifier.padding(12.dp)) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background), // Add sample image in drawable
+            AsyncImage(
+                model = article.imageUrl ?: R.drawable.ic_launcher_background,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

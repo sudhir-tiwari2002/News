@@ -1,30 +1,37 @@
 package com.example.mynewsapp.ui.Composable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import android.annotation.SuppressLint
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.viewinterop.AndroidView
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun DetailScreen(articleUrl: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Article URL:",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        Text(
-            text = articleUrl,
-            maxLines = 5,
-            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Detailed Screen") }
+            )
+        }
+    ) { innerPadding ->
+        AndroidView(
+            factory = { context ->
+                WebView(context).apply {
+                    webViewClient = WebViewClient()
+                    settings.javaScriptEnabled = true
+                    loadUrl(articleUrl)
+                }
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         )
     }
-
 }

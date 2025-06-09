@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.mynewsapp.ui.Composable.BookmarkScreen
 import com.example.mynewsapp.ui.Composable.DetailScreen
 import com.example.mynewsapp.ui.Composable.HomeScreen
 
@@ -22,11 +23,16 @@ sealed class Screen(val route: String) {
 fun NavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            HomeScreen(onArticleClick = { url ->
-                if (url.isNotBlank()) {
-                    navController.navigate(Screen.Detail.createRoute(url))
+            HomeScreen(
+                onArticleClick = { url ->
+                    if (url.isNotBlank()) {
+                        navController.navigate(Screen.Detail.createRoute(url))
+                    }
+                },
+                onBookmarkClick = {
+                    navController.navigate(Screen.Bookmark.route)
                 }
-            })
+            )
         }
 
         composable(
@@ -38,8 +44,8 @@ fun NavGraph(navController: NavHostController) {
             DetailScreen(articleUrl = decodedUrl)
         }
 
-//        composable(Screen.Bookmark.route) {
-//            BookmarkScreen()
-//        }
+        composable(Screen.Bookmark.route) {
+            BookmarkScreen()
+        }
     }
 }
