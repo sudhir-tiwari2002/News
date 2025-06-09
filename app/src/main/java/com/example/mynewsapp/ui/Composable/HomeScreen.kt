@@ -29,7 +29,8 @@ import androidx.compose.material3.*
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onArticleClick: (String) -> Unit
+    onArticleClick: (String) -> Unit,
+    onBookmarkClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -52,7 +53,7 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { /* TODO: Handle bookmark action */ }) {
+                    IconButton(onClick = onBookmarkClick) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
                             contentDescription = "Bookmarks"
