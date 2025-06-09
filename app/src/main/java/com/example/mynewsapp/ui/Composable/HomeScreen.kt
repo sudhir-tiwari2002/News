@@ -23,6 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mynewsapp.HomeIntent
 import com.example.mynewsapp.HomeViewModel
 import androidx.compose.material3.*
+import androidx.compose.ui.platform.LocalContext
+import com.example.mynewsapp.isInternetAvailable
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +34,12 @@ fun HomeScreen(
     onArticleClick: (String) -> Unit,
     onBookmarkClick: () -> Unit
 ) {
+
+    val context = LocalContext.current
+    val isOnline = isInternetAvailable(context)
+
     val state by viewModel.state.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(HomeIntent.LoadArticles)
@@ -48,7 +55,7 @@ fun HomeScreen(
                 title = {
                     Text(
                         text = "News Article",
-                        color = MaterialTheme.colorScheme.error, // Red by default in MaterialTheme
+                        color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
@@ -63,7 +70,17 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        if (articles.isEmpty()) {
+        if(!isOnline){
+            Text(
+                text = "No Internet Available",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(16.dp)
+            )
+        }
+        else if (articles.isEmpty()) {
             Text(
                 text = "No articles available",
                 modifier = Modifier
